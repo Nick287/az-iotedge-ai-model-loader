@@ -22,7 +22,7 @@ class ProcessImages():
             if(model_full_path == ""):
                 logging.info("################ PLEASE SET AI MODEL FIRST")
                 logging.info("############## ############## END ############## ##############")
-                return results
+                raise Exception ("PLEASE SET AI MODEL FIRST")
             logging.info("############## AI MODEL PATH: " + model_full_path)
             if '.tflite' in model_full_path:
                 interpreter = tf.lite.Interpreter(model_path=model_full_path)
@@ -88,9 +88,6 @@ class AIImageProcessor():
         logging.info("############## tensorflow version is: " + tf.__version__ )
 
         resp = ProcessImages().detect_object(imgBytes)
-
-        if resp == "[]":
-            resp == "[{'result': 'no detect MS logo'}]"
              
         logging.info("############## detect result: " + resp)
         logging.info("############## ############## END ############## ##############")

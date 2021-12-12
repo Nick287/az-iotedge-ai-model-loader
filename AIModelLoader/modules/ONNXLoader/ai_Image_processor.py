@@ -39,7 +39,7 @@ class ProcessImages():
             if(model_full_path == ""):
                 logging.info("################ PLEASE SET AI MODEL FIRST")
                 logging.info("############## ############## END ############## ##############")
-                return results
+                raise Exception ("PLEASE SET AI MODEL FIRST")
             logging.info("############## AI MODEL PATH: " + model_full_path)
             if '.onnx' in model_full_path:
 

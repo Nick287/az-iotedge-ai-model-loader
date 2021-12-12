@@ -5,7 +5,6 @@ import os
 import logging
 import time
 from flask import Flask, Response, Request, abort, request
-import requests
 import argparse
 from ai_Image_processor import AIImageProcessor
 
@@ -110,7 +109,7 @@ def Run_WebAPI():
                 return Response(status = 400)
         except Exception as ex:
             logging.info('error: {}'.format(ex))
-            abort(Response(response='Image processing error', status = 400))
+            abort(Response(response=str(ex), status = 400))
     # Running the file directly
     app.run(host='0.0.0.0', port=httpServerPort)
 

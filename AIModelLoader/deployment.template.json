@@ -95,7 +95,7 @@
                   "PortBindings": {
                     "8080/tcp": [
                       {
-                        "HostPort": "80"
+                        "HostPort": "8080"
                       }
                     ]
                   }
