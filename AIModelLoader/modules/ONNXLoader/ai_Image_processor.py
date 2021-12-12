@@ -10,7 +10,7 @@ from ai_model_path import AI_Model_Path
 
 class ProcessImages():
 
-    def letterbox_image(image, size):
+    def letterbox_image(self, image, size):
         '''resize image with unchanged aspect ratio using padding'''
         iw, ih = image.size
         w, h = size

@@ -1,7 +1,7 @@
-from msrest.authentication import ApiKeyCredentials
-import requests
+# from msrest.authentication import ApiKeyCredentials
+# import requests
 import time
-import sys
+# import sys
 from time import sleep
 from azure.iot.hub import IoTHubRegistryManager
 from azure.iot.hub.models import Twin, TwinProperties, QuerySpecification, QueryResult
@@ -15,7 +15,8 @@ from azure.iot.hub.protocol.operations.devices_operations import DevicesOperatio
 
 iothub_connection_str = "HostName=avasample76havxesh5rb6.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=q/8JCYncr2r1JS3CQCJVat5FpLl/2zA3SIoWZ6XShT0="
 device_id = "EdgeVM001"
-module_id = "TensorFlowLoader"
+# module_id = "TensorFlowLoader"
+module_id = "ONNXLoader"
 
 # RegistryManager
 iothub_registry_manager = IoTHubRegistryManager.from_connection_string(iothub_connection_str)
