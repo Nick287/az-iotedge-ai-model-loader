@@ -89,6 +89,29 @@
               "image": "mcr.microsoft.com/azureiotedge-simulated-temperature-sensor:1.0",
               "createOptions": {}
             }
+          },
+          "ONNXLoader": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "${MODULES.ONNXLoader.debug}",
+              "createOptions": {
+                "ExposedPorts": {
+                  "5678/tcp": {}
+                },
+                "HostConfig": {
+                  "PortBindings": {
+                    "5678/tcp": [
+                      {
+                        "HostPort": "5678"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -98,7 +121,8 @@
         "schemaVersion": "1.1",
         "routes": {
           "TensorFlowLoaderToIoTHub": "FROM /messages/modules/TensorFlowLoader/outputs/* INTO $upstream",
-          "sensorToTensorFlowLoader": "FROM /messages/modules/SimulatedTemperatureSensor/outputs/temperatureOutput INTO BrokeredEndpoint(\"/modules/TensorFlowLoader/inputs/input1\")"
+          "sensorToTensorFlowLoader": "FROM /messages/modules/SimulatedTemperatureSensor/outputs/temperatureOutput INTO BrokeredEndpoint(\"/modules/TensorFlowLoader/inputs/input1\")",
+          "ONNXLoaderToIoTHub": "FROM /messages/modules/ONNXLoader/outputs/* INTO $upstream"
         },
         "storeAndForwardConfiguration": {
           "timeToLiveSecs": 7200

@@ -79,6 +79,29 @@
                 }
               }
             }
+          },
+          "ONNXLoader": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "${MODULES.ONNXLoader}",
+              "createOptions": {
+                "HostConfig": {
+                  "Binds": [
+                    "/iotedge/storage/:/iotedge/storage/"
+                  ],
+                  "PortBindings": {
+                    "8080/tcp": [
+                      {
+                        "HostPort": "80"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -87,7 +110,8 @@
       "properties.desired": {
         "schemaVersion": "1.2",
         "routes": {
-          "TensorFlowLoaderToIoTHub": "FROM /messages/modules/TensorFlowLoader/outputs/* INTO $upstream"
+          "TensorFlowLoaderToIoTHub": "FROM /messages/modules/TensorFlowLoader/outputs/* INTO $upstream",
+          "ONNXLoaderToIoTHub": "FROM /messages/modules/ONNXLoader/outputs/* INTO $upstream"
         },
         "storeAndForwardConfiguration": {
           "timeToLiveSecs": 7200
