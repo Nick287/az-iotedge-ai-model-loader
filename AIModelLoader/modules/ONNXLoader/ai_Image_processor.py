@@ -6,6 +6,8 @@ import numpy as np
 import onnxruntime as rt
 import time
 from ai_model_path import AI_Model_Path
+from PIL import Image
+import io
 
 
 class ProcessImages():
@@ -90,7 +92,10 @@ class AIImageProcessor():
     def process_images(self, imgBytes):      
         logging.info("############## ############## Start Load AI Model ############## ##############")
 
-        resp = ProcessImages().detect_object(imgBytes)
+        
+        image = Image.open(io.BytesIO(imgBytes))
+
+        resp = ProcessImages().detect_object(image)
              
         logging.info("############## detect result: " + resp)
         logging.info("############## ############## END ############## ##############")
