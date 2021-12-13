@@ -9,4 +9,4 @@ However, as you know, Azure IoT Edge Module is the basis on docker. In generally
 ## Overview
 
 This Edge AI loader module architecture please refer below
-![image](image\architecture_diagram.png)
+![image](image/architecture_diagram.png)
