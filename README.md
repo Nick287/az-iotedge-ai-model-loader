@@ -8,9 +8,11 @@ However, as you know, Azure IoT Edge Module is the basis on docker. In generally
 
 ## Overview
 
-In This AI loader sample have some Key concepts need to be clarify first.
+This sample I have Create 2 Edge Module one for load TensorFlow *.tflite format model and another is for load *.onnx (Open Neural Network Exchange) format model.
 
-TensorFlow:
+So for this AI loader sample have some Key concepts need to be clarify first.
+
+### TensorFlow:
 
 1. AI Model File: *.tflite its pre-trained AI model which download from [TensorFlow.org - Download starter model with Metadata](https://www.tensorflow.org/lite/examples/object_detection/overview) and its a generic AI model format that can be used in cross-platform applications such as IOS and Android. And about more information about Metadata and associated fields (eg: labels.txt) see [Read the metadata from models](https://www.tensorflow.org/lite/convert/metadata#read_the_metadata_from_models)
 2. Model description： An object detection model is trained to detect the presence and location of multiple classes of objects. For example, a model might be trained with images that contain various pieces of fruit, along with a label that specifies the class of fruit they represent (e.g. an apple, a banana, or a strawberry), and data specifying where each object appears in the image.
@@ -19,7 +21,7 @@ TensorFlow:
 3. In case of if you want to build or customize tuning an AI Model please see [TensorFlow Lite Model Maker](https://www.tensorflow.org/lite/guide/model_maker)
 4. More free pre-trained detection models with a variety of latency and precision characteristics can be found in the [Detection Zoo](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/tf1_detection_zoo.md#mobile-models). Each one of them follows the input and output signatures described in the following sections.
 
-Open Neural Network Exchange (ONNX):
+### Open Neural Network Exchange (ONNX):
 
 Open Neural Network Exchange (ONNX) is an open standard format for representing machine learning models. ONNX is supported by a community of partners who have implemented it in many frameworks and tools.
 
@@ -70,5 +72,25 @@ image_data = preprocess(image)
 image_size = np.array([image.size[1], image.size[0]], dtype=np.float32).reshape(1, 2)
 ```
 
-This Edge AI loader module architecture please refer below
+So in this sample, the dynamically loaded AI model base on the features of IoT Edge module Twin, the architecture please refer below and it work steps like this
+
+1. Upload Pre-Trained AI Models to public Blob storage (Or any other Web service, just for the Edge Module to access this resource)
+2. The IoT Hub will sync device module twins automatically with AI Models information, the sync will be done even if IoT Edge offline for some time.
+3. The Loader Module monitors the updates of module twins via SDK. Through this way, it can get the ML model SAS token, and then download the AI model.
+4. The Loader Module saves the AI model in the shared local storage of the IoT Edge Module. The local storage needs to be configured in the IoT Edge deployment JSON file.
+5. The Loader Module load the AI model from the local storage by TensorFlow/ONNX SDK.
+6. The Loader Module starts a Web API that receives the binary photo via post request and returns json results
+
 ![image](image/architecture_diagram.png)
+
+## Reference
+
+- [Understand and use module twins in IoT Hub](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-module-twins)
+- [Learn how to deploy modules and establish routes in IoT Edge](https://docs.microsoft.com/en-us/azure/iot-edge/module-composition?view=iotedge-2020-11)
+- [Building Azure IoT Edge Module with Message Routing 101](https://tsmatz.wordpress.com/2019/10/19/azure-iot-hub-iot-edge-module-container-tutorial-with-message-route/)
+- [Give modules access to a device's local storage](https://docs.microsoft.com/en-us/azure/iot-edge/how-to-access-host-storage-from-module?view=iotedge-2020-11#link-module-storage-to-device-storage)
+- [Add local storage to Azure IoT Edge modules using Docker Bind](https://sandervandevelde.wordpress.com/2021/01/07/add-local-storage-to-azure-iot-edge-modules-using-docker-bind/)
+- [Understand IoT Edge automatic deployments for single devices or at scale](https://docs.microsoft.com/en-us/azure/iot-edge/module-deployment-monitoring?view=iotedge-2020-11)
+- [Open Neural Network Exchange](https://github.com/onnx/)
+- [ONNX Tutorials](https://github.com/onnx/tutorials)
+- [Deploy ML model on IoT and edge devices](https://github.com/microsoft/onnxruntime/blob/gh-pages/docs/tutorials/iot-edge.md)
